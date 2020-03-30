@@ -22,7 +22,7 @@
     "codegrid",
     "openstreetmap"
   ],
-  "license": "MIT",
+  "license": "WTFPL",
   "dependencies":{
   },
   "devDependencies": {
