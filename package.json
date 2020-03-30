@@ -1,12 +1,11 @@
 {
-  "name": "codegrid-js",
-  "version": "0.0.2",
-  "description": "Javascript function to query country code from coordinates",
-  "author": "hlaw <hhclaw.eb@gmail.com>",
+  "name": "react-codegrid",
+  "version": "0.0.1",
+  "description": "React and React Native Javascript function to query country code from coordinates",
+  "author": "quinszouls",
   "main": "src/codegrid.js",
   "directories": {
     "doc": "doc",
-    "demo": "demo",
     "tiles": "tiles",
     "src": "src",
     "test": "test"
@@ -14,16 +13,16 @@
   "scripts": {
     "test": "nodejs test/test.js"
   },
-  "homepage": "https://github.com/hlaw/codegrid-js/",
+  "homepage": "https://github.com/QuinsZouls/react-codegrid",
   "repository": {
     "type": "git",
-    "url": "git://github.com/hlaw/codegrid-js.git"
+    "url": "https://github.com/QuinsZouls/react-codegrid.git"
   },
   "keywords": [
     "codegrid",
     "openstreetmap"
   ],
-  "license": "WTFPL",
+  "license": "MIT",
   "dependencies":{
   },
   "devDependencies": {
