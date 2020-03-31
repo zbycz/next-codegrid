@@ -392,7 +392,7 @@ export default async function tiles([x, y]) {
         case '17':
           return await import('./31/17.json');
       }
-    case 'worlgrid':
+    case 'worldgrid':
       return await import('./worldgrid.json');
   }
 }
