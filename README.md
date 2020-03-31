@@ -2,7 +2,6 @@
 
 `react-codegrid` is a simple javascript library for efficiently retrieving country code from lat-lng coordinates of a point. The data is encoded in a set of compressed utf-grid json files.
 
-
 ## Features
 
 - No application server needed (other than static web serving for browser use). No dependencies on external geocoding services.
@@ -13,19 +12,38 @@
 
 - Flexibility - sub-country divisions can be incorporated by custom geojson files.
 
-
 ## Usage
 
-### Node.js use
+### npm use
 
 ```
-npm install git://github.com/QuinsZouls/react-codegrid.git
+npm install react-codegrid
+```
+
+### yarn use
+
+```
+yarn add react-codegrid
 ```
 
 In Javascript:
 
 ```js
 const codegrid = require('react-codegrid');
+
+codegrid.getCode(lat, lng, callback);
+```
+
+Example
+
+```js
+const codegrid = require('react-codegrid');
+
+codegrid.getCode(2.811371, -74.43708, (error, code) => {
+  if (!error) {
+    //return a country code
+  }
+});
 ```
 
 ## Data structure

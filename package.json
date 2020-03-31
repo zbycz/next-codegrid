@@ -1,6 +1,6 @@
 {
   "name": "react-codegrid",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "React and React Native Javascript function to query country code from coordinates",
   "author": "quinszouls",
   "main": "src/codegrid.js",
@@ -20,7 +20,9 @@
   },
   "keywords": [
     "codegrid",
-    "openstreetmap"
+    "openstreetmap",
+    "geocoder",
+    "country"
   ],
   "license": "WTFPL",
   "dependencies":{
