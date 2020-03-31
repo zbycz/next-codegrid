@@ -349,9 +349,9 @@ function lat2tile(lat, zoom) {
 async function loadjson(path, callback) {
   try {
     if (path === 'worldgrid.json') {
-      callback(null, tiles(['worldgrid']));
+      callback(null, await tiles(['worldgrid']));
     } else {
-      callback(null, tiles([path[0], path[1]]));
+      callback(null, await tiles([path[0], path[1]]));
     }
   } catch (e) {
     callback(e.message);
