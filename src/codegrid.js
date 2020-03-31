@@ -1,5 +1,4 @@
-import Tiles from './tiles';
-
+import tiles from './tiles';
 const LATLIMIT =
   (Math.atan((Math.exp(Math.PI) - Math.exp(-Math.PI)) / 2) / Math.PI) * 180;
 
@@ -349,11 +348,10 @@ function lat2tile(lat, zoom) {
 
 async function loadjson(path, callback) {
   try {
-    let tiles = await Tiles();
     if (path === 'worldgrid.json') {
-      callback(null, tiles['worldgrid']);
+      callback(null, tiles(['worldgrid']));
     } else {
-      callback(null, tiles[path[0]][path[1]]);
+      callback(null, tiles([path[0], path[1]]));
     }
   } catch (e) {
     callback(e.message);
