@@ -1,22 +1,22 @@
 {
-  "name": "react-codegrid",
-  "version": "0.0.3",
-  "description": "React and React Native Javascript function to query country code from coordinates",
-  "author": "quinszouls",
-  "main": "src/codegrid.js",
+  "name": "next-codegrid",
+  "version": "0.0.0",
+  "description": "query country code from coordinates (next-js)",
+  "author": "zbycz",
+  "type": "module",
+  "exports": "./src/codegrid.mjs",
+  "types": "./codegrid.d.ts",
   "directories": {
-    "doc": "doc",
-    "tiles": "tiles",
     "src": "src",
     "test": "test"
   },
   "scripts": {
-    "test": "nodejs test/test.js"
+    "test": "node test/test.js"
   },
-  "homepage": "https://github.com/QuinsZouls/react-codegrid",
+  "homepage": "https://github.com/zbycz/next-codegrid",
   "repository": {
     "type": "git",
-    "url": "https://github.com/QuinsZouls/react-codegrid.git"
+    "url": "https://github.com/zbycz/next-codegrid.git"
   },
   "keywords": [
     "codegrid",
@@ -25,9 +25,7 @@
     "country"
   ],
   "license": "WTFPL",
-  "dependencies":{
-  },
-  "devDependencies": {
-  },
+  "dependencies": {},
+  "devDependencies": {},
   "engine": "node >= 0.6.0"
 }

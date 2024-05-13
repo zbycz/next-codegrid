@@ -1,70 +1,25 @@
-# react-codegrid - Javascript function to query country code
+# next-codegrid - query country code
 
-`react-codegrid` is a simple javascript library for efficiently retrieving country code from lat-lng coordinates of a point. The data is encoded in a set of compressed utf-grid json files.
+Modification of the [codegrid-js](http://github.com/hlaw/codegrid-js) library for use in Next.js.
 
-## Features
+- bundles all tiles as javascript chunks – both for client and server
+- this process adds 10 secs to the `next build` (TODO: optimize - store in /public ?)
+    - output size is 10.5 MB (see .next/static/chunks)
+- first resolve takes ~40ms (both client and server), subsequent resolves are instant if it falls to the same tile
+    - fetches 35kb for worldgrid, then 100-300kb for tile (or 13kb gzipped, then ~50kB for tile)
 
-- No application server needed (other than static web serving for browser use). No dependencies on external geocoding services.
-
-- Compact data size - under present configuration, country code is resolved at grain level of zoom 17 tiles (several hundred meters). JSON files covering the planet take up 13M, and <1.3M after compression by gzip.
-
-- JS code has no external dependencies for browser use (native JSON assumed).
-
-- Flexibility - sub-country divisions can be incorporated by custom geojson files.
+- sadly the generator is lost, so no more updates to the tiles: http://github.com/hlaw/codegrid
 
 ## Usage
-
-### npm use
-
 ```
-npm install react-codegrid
+yarn add next-codegrid
 ```
 
-### yarn use
+```typescript
+import { resolveCountryCode } from 'react-codegrid';
 
+const code = await resolveCountryCode([lon, lat]);
 ```
-yarn add react-codegrid
-```
-
-In Javascript:
-
-```js
-const codegrid = require('react-codegrid');
-
-codegrid.getCode(lat, lng, callback);
-```
-
-Example
-
-```js
-const codegrid = require('react-codegrid');
-
-codegrid.getCode(2.811371, -74.43708, (error, code) => {
-  if (!error) {
-    //return a country code
-  }
-});
-```
-
-## Data structure
-
-Concept -
-
-- Similar to UTF Grid : https://github.com/mapbox/utfgrid-spec (Note: The json files used are grouped and compressed, and do not meet the specifications)
-
-Under the present schema -
-
-- At the top level, the world is coded into a 512\*512 utf-grid, providing a resolution at zoom level 9 (z9) tiles.
-
-- _When and only when_ there is ambiguity (2 or more countries in the same z9 tile), the next level grid (resolution at z13) is generated.
-
-- Similarly, a further level at zoom level 17 is generated. Tiles with ambiguity are set to the country at the center point.
-
-- To save space, in case one country takes up only part of a tile, and the rest of it is open sea, the entire tile is set to the country.
-
-- A number of tiles contain highly repetitive data (same country in a grid row, or repeating patterns). While gzip could save much of the network bandwidth during transit, tiles without compression would still take up much memory when loaded. The utf grids are therefore compressed in JSON representation, cutting down roughly 80% in size.
-
-- utf-grid tile data derived from Openstreetmap data with some manual fixes, separately using a set of Python scripts - http://github.com/hlaw/codegrid
 
 ## License
 
@@ -74,8 +29,9 @@ Under the present schema -
 
 ## Github page
 
-- http://github.com/hlaw/codegrid-js
+- http://github.com/hlaw/codegrid-js (DOCS)
 - https://github.com/QuinsZouls/react-codegrid
+- https://github.com/zbycz/next-codegrid
 
 ## Author
 

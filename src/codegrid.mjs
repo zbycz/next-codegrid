@@ -1,4 +1,3 @@
-import tiles from './tiles';
 const LATLIMIT =
   (Math.atan((Math.exp(Math.PI) - Math.exp(-Math.PI)) / 2) / Math.PI) * 180;
 
@@ -33,7 +32,7 @@ var Grid, Zoomgrids;
 var g = {};
 
 // Class for a single utf-grid
-Grid = function(tx, ty, zoom, json) {
+Grid = function (tx, ty, zoom, json) {
   var grid = {},
     size = 0,
     data,
@@ -109,7 +108,7 @@ Grid = function(tx, ty, zoom, json) {
     return null;
   }
 
-  grid.getCode = function(lat, lng, callback) {
+  grid.getCode = function (lat, lng, callback) {
     var x = long2tile(lng, elezoom) - elex;
     var y = lat2tile(lat, elezoom) - eley;
 
@@ -138,7 +137,7 @@ Grid = function(tx, ty, zoom, json) {
 };
 
 // Manage grids of one zoom level
-Zoomgrids = function(zlist) {
+Zoomgrids = function (zlist) {
   var zoomgrids = {},
     zGrids = [],
     zoom = zlist[0],
@@ -157,7 +156,7 @@ Zoomgrids = function(zlist) {
       }
     }
     // append zoom, x, y into zGrids and return
-    retrieveGrid(x, y, function(error, rGrid) {
+    retrieveGrid(x, y, function (error, rGrid) {
       if (!error) {
         zGrids.push(rGrid);
         callback(null, rGrid);
@@ -184,7 +183,7 @@ Zoomgrids = function(zlist) {
     }
 
     //Cache miss
-    loadjson([cellx.toString(), celly.toString()], function(error, json) {
+    loadjson([cellx.toString(), celly.toString()], function (error, json) {
       if (error) {
         callback('Grid data loading error.');
         return console.warn('Error loading grid tile data: ' + error);
@@ -213,24 +212,24 @@ Zoomgrids = function(zlist) {
       callback('Grid tile not found in loaded data.');
       return console.warn(
         'Grid tile ' +
-          zoom.toString() +
-          '/' +
-          x.toString() +
-          '/' +
-          y.toString() +
-          ' not found in loaded data.',
+        zoom.toString() +
+        '/' +
+        x.toString() +
+        '/' +
+        y.toString() +
+        ' not found in loaded data.',
       );
     }
     return null;
   }
 
-  zoomgrids.getCode = function(lat, lng, callback) {
+  zoomgrids.getCode = function (lat, lng, callback) {
     var x = long2tile(lng, zoom),
       y = lat2tile(lat, zoom);
 
-    getGrid(x, y, function(error, rGrid) {
+    getGrid(x, y, function (error, rGrid) {
       if (!error) {
-        rGrid.getCode(lat, lng, function(error, result) {
+        rGrid.getCode(lat, lng, function (error, result) {
           if (!error) {
             if (result === '*') {
               // Search in nextzoomGrids
@@ -256,7 +255,7 @@ Zoomgrids = function(zlist) {
 // Public function for retrieving country codes
 // First parameter (optional): URL path to the tiles directory
 // Second parameter (optional): worldGrid object (parsed JSON)
-g.CodeGrid = function(path, wgrid) {
+g.CodeGrid = function (path, wgrid) {
   var codegrid = {},
     zoomGrids,
     worldGrid,
@@ -278,7 +277,7 @@ g.CodeGrid = function(path, wgrid) {
 
   function initWorldGrid() {
     var worldPath = gridPath + worldFile;
-    loadjson(worldPath, function(error, json) {
+    loadjson(worldPath, function (error, json) {
       if (error) return console.warn('Error loading geocoding data: ' + error);
       loadWorldJSON(json);
       // Clear pending calls to getCode
@@ -297,7 +296,7 @@ g.CodeGrid = function(path, wgrid) {
     initializing = false;
   }
 
-  codegrid.getCode = function(lat, lng, callback) {
+  codegrid.getCode = function (lat, lng, callback) {
     if (!initialized) {
       if (initializing) {
         // Callback after initialization
@@ -308,7 +307,7 @@ g.CodeGrid = function(path, wgrid) {
       callback('Error: grid not initialized.');
       return;
     }
-    worldGrid.getCode(lat, lng, function(error, result) {
+    worldGrid.getCode(lat, lng, function (error, result) {
       if (!error) {
         if (result === '*') {
           // Search in zoomGrids
@@ -340,22 +339,39 @@ function lat2tile(lat, zoom) {
       Math.log(
         Math.tan((lat * Math.PI) / 180) + 1 / Math.cos((lat * Math.PI) / 180),
       ) /
-        Math.PI) /
+      Math.PI) /
       2) *
-      Math.pow(2, zoom),
+    Math.pow(2, zoom),
   );
 }
 
 async function loadjson(path, callback) {
   try {
     if (path === 'worldgrid.json') {
-      callback(null, await tiles(['worldgrid']));
+      const worldgrid = await import('./tiles/worldgrid.json', { assert: { type: 'json' }});
+      console.log('worldgrid', worldgrid.default);
+      callback(null, worldgrid.default);
     } else {
-      callback(null, await tiles([path[0], path[1]]));
+      const tile = await import(`./tiles/${path[0]}/${path[1]}.json`, { assert: { type: 'json' }});
+      callback(null, tile.default);
     }
   } catch (e) {
     callback(e.message);
   }
 }
 
-export default new g.CodeGrid();
+let codeGrid;
+export const resolveCountryCode = ([lng, lat]) => {
+  if (!codeGrid) {
+    codeGrid = new g.CodeGrid();
+  }
+  return new Promise((resolve, reject) => {
+    codeGrid.getCode(lat, lng, (error, code) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(code);
+      }
+    });
+  });
+}
