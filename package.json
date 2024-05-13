@@ -1,6 +1,6 @@
 {
   "name": "next-codegrid",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "query country code from coordinates (next-js)",
   "author": "zbycz",
   "type": "module",
