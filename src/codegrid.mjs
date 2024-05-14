@@ -348,11 +348,11 @@ function lat2tile(lat, zoom) {
 async function loadjson(path, callback) {
   try {
     if (path === 'worldgrid.json') {
-      const worldgrid = await import('./tiles/worldgrid.json', { assert: { type: 'json' }});
+      const worldgrid = await import('./tiles/worldgrid.js');
       console.log('worldgrid', worldgrid.default);
       callback(null, worldgrid.default);
     } else {
-      const tile = await import(`./tiles/${path[0]}/${path[1]}.json`, { assert: { type: 'json' }});
+      const tile = await import(`./tiles/${path[0]}/${path[1]}.js`);
       callback(null, tile.default);
     }
   } catch (e) {
