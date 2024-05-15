@@ -1,6 +1,6 @@
 # next-codegrid - query country code
 
-Modification of the [codegrid-js](http://github.com/hlaw/codegrid-js) library for use in Next.js.
+Modification of the [codegrid-js](http://github.com/hlaw/codegrid-js) library for use in Next.js (specifically [osmapp](https://github.com/zbycz/osmapp/pull/327)).
 
 - bundles all tiles as javascript chunks – both for client and server
 - this process adds 10 secs to the `next build` (TODO: optimize - store in /public ?)
@@ -8,7 +8,8 @@ Modification of the [codegrid-js](http://github.com/hlaw/codegrid-js) library fo
 - first resolve takes ~40ms (both client and server), subsequent resolves are instant if it falls to the same tile
     - fetches 35kb for worldgrid, then 100-300kb for tile (or 13kb gzipped, then ~50kB for tile)
 
-- sadly the generator is lost, so no more updates to the tiles: http://github.com/hlaw/codegrid
+
+Note: sadly the generator is lost, so no more updates to the tiles (http://github.com/hlaw/codegrid)
 
 ## Usage
 ```
