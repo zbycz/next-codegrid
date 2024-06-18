@@ -349,7 +349,6 @@ async function loadjson(path, callback) {
   try {
     if (path === 'worldgrid.json') {
       const worldgrid = await import('./tiles/worldgrid.js');
-      console.log('worldgrid', worldgrid.default);
       callback(null, worldgrid.default);
     } else {
       const tile = await import(`./tiles/${path[0]}/${path[1]}.js`);
@@ -361,12 +360,18 @@ async function loadjson(path, callback) {
 }
 
 let codeGrid;
-export const resolveCountryCode = ([lng, lat]) => {
+export const resolveCountryCode = (position) => {
+  if (!position || position.length !== 2) {
+    return Promise.reject(new Error('Invalid coordinates'));
+  }
+
   if (!codeGrid) {
     codeGrid = new g.CodeGrid();
   }
+
   return new Promise((resolve, reject) => {
-    codeGrid.getCode(lat, lng, (error, code) => {
+    const [lon, lat] = position;
+    codeGrid.getCode(lat, lon, (error, code) => {
       if (error) {
         reject(error);
       } else {
